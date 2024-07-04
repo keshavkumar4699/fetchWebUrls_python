@@ -1,47 +1,31 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+import webbrowser
 
-def mam_login(driver):
-    driver.get("https://www.myanonamouse.net/index.php")
-    # Enter login credentitals
-    username_field = driver.find_element(By.NAME, "email")
-    password_field = driver.find_element(By.NAME, "password")
-    username_field.send_keys("sweatik2@gmail.com")
-    password_field.send_keys("K1a12i@7106")
-    # Submit the form
-    submit_button = driver.find_element(By.CSS_SELECTOR, "input[value='Log in!']")
-    submit_button.click()
-    return
+# Read the HTML file
+with open('table.html', 'r', encoding='utf-8') as file:
+    html_table = file.read()
 
-# fetching html file contents from webpage
-def is_freeleech(driver, url):
-    # Open the webpage
-    driver.get(url)
-    # Get the HTML content
-    html_content = driver.page_source
-    # Parse the HTML using BeautifulSoup
-    soup = BeautifulSoup(html_content, "html.parser")
-    # Find the <div> with ID "ratio"
-    div_ratio = soup.find("div", id="ratio")
-    span = div_ratio.find_all("div")[1].find("span")
+# Parse the HTML content
+soup = BeautifulSoup(html_table, 'html.parser')
 
-    return check_freeleech_flag(span.text)
+rows = soup.find_all('tr')
 
-# function to check ratio text
-def check_freeleech_flag(input_str):
-    lower_str = input_str.lower()
-    # Check if freeleech word is present or not
-    if "freeleech" in lower_str:
-        return True
-    else: 
-        return  False
-    
-driver = webdriver.Firefox()
-mam_login(driver)
+href_values = []
 
-url = "https://www.myanonamouse.net/t/1050721"
-print(is_freeleech(driver, url))
+for row in rows:
+    cols = row.find_all('td')
+    if len(cols) >= 3:
+        img_tag = cols[1].find('img', title = 'VIP')
+        if img_tag:
+            a_tag = cols[2].find('a')
+            if a_tag:
+                href_value = a_tag['href']
+                href_values.append('https://www.myanonamouse.net'+href_value)
+            
+print("VIP href values: ", href_values)
 
-# Close the browser
-driver.quit()
+for url in href_values:
+    try:
+        webbrowser.open(url)
+    except Exception as e:
+        print(f"Error fetching {url}: {e}")
