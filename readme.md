@@ -6,11 +6,15 @@
 3. Search for 100 freeleech torrents less than 1MB and download them
 
 ### STEPS followed
-#### Objective 1: For fetching table of torrents
-1. 
+#### Objective 1: For fetching from snatch table
+1. Go to torrents page 'https://www.myanonamouse.net/snatch_summary.php'
+2. Expand the content of 'Satisfied Not seeding'
+3. Get the list of torrents
 
 #### Objective 2: For fetching list of VIP torrents
-1. 
+1. Go to torrents page 'https://www.myanonamouse.net/tor/browse.php'
+2. Check in table for VIP torrent with size less than 2 MiB
+3. Add them to array 
 
 #### Objective 3: For fetching list of freeleech torrents
 1. 
@@ -28,3 +32,7 @@
 Objective 1: if freeleech or less than 1MB
 Objective 2: if VIP and less than 1MB
 Objective 3: if freeleech and less than 1MB
+
+### Future Scope
+1. Remove the need for snatch table and fetch directly from web and then download them
+2. 
